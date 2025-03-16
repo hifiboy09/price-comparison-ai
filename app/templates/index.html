@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Comparison AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Price Comparison AI</h1>
+    <form id="searchForm">
+        <input type="text" id="searchQuery" placeholder="Search for a product..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById("searchForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            let query = document.getElementById("searchQuery").value;
+            fetch(`/search`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({query: query})
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
+                data.forEach(item => {
+                    let productDiv = document.createElement("div");
+                    productDiv.innerHTML = `
+                        <h3>${item.title}</h3>
+                        <p>Price: ${item.price}</p>
+                        <a href="${item.url}" target="_blank"><button>Buy Now</button></a>
+                    `;
+                    resultsDiv.appendChild(productDiv);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
