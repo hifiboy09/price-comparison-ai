@@ -2,3 +2,7 @@ Flask
 beautifulsoup4
 requests
 firebase-admin
+Flask==2.1.1
+requests==2.26.0
+google-auth==2.3.0
+google-api-python-client==2.27.0
